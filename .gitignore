@@ -1,0 +1,10 @@
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+models_dummy/
+*.db
+mlruns/
+mlartifacts/
+.env

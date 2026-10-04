@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      MODELS_DIR: /models
+    volumes:
+      - ./models:/models:ro          # ONNX files live here (see models/README.md)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
